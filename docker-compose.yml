@@ -2,12 +2,13 @@ services:
   web:
     image: odoo:17.0
     depends_on:
-      - db
+      postgres:
+        condition: service_healthy
     ports:
       - "8069:8069"
     volumes:
       - odoo-web-data:/var/lib/odoo
-  db:
+  postgres:
     image: postgres:15
     environment:
       - POSTGRES_DB=${POSTGRES_DB}
@@ -16,6 +17,12 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - odoo-db-data:/var/lib/postgresql/data/pgdata
+      - ./init-data.sh:/docker-entrypoint-initdb.d/init-data.sh
+    healthcheck:
+      test: [ 'CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}' ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 volumes:
   odoo-web-data:
