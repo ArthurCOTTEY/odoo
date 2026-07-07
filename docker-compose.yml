@@ -8,6 +8,10 @@ services:
       - "8069:8069"
     volumes:
       - odoo-web-data:/var/lib/odoo
+    environment:
+      - HOST=${POSTGRES_DB}
+      - USER=${POSTGRES_USER}
+      - PASSWORD=${POSTGRES_PASSWORD}
   db:
     image: postgres:15
     environment:
