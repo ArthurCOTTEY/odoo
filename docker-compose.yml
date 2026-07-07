@@ -9,9 +9,13 @@ services:
     volumes:
       - odoo-web-data:/var/lib/odoo
     environment:
-      - HOST=${POSTGRES_DB}
+      - HOST=db
       - USER=${POSTGRES_USER}
       - PASSWORD=${POSTGRES_PASSWORD}
+    command: >
+      odoo
+      -d ${POSTGRES_DB}
+      -i base
   db:
     image: postgres:15
     environment:
