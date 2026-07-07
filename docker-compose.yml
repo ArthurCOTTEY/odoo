@@ -1,6 +1,6 @@
 services:
   web:
-    image: odoo:17.0
+    image: odoo:17
     depends_on:
       db:
         condition: service_healthy
@@ -15,7 +15,7 @@ services:
     command: >
       odoo
       -d ${POSTGRES_DB}
-      -i base
+
   db:
     image: postgres:15
     environment:
